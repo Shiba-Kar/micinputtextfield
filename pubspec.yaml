@@ -1,7 +1,7 @@
 name: micinputtextfield
 description: "This package provides with image , text and audio input similar to whattsapp textfield."
 version: 0.0.1
-homepage: 
+homepage: https://github.com/Shiba-Kar/micinputtextfield.git
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -13,7 +13,8 @@ dependencies:
   record: ^5.0.4 
   loading_animation_widget: ^1.2.0+4 
   image_picker: ^1.0.5
-  path_provider: ^2.1.1
+  path: ^1.8.3
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:

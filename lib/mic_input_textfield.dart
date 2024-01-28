@@ -54,7 +54,6 @@ class _MicTextFieldState extends State<MicInputTextField>
   StreamSubscription<RecordState>? _rSub;
   RecordState _recordState = RecordState.stop;
   StreamSubscription<Amplitude>? _amplitudeSub;
-  Amplitude? _amplitude;
 
   bool _fieldDirty = false;
   File? _image;
@@ -105,7 +104,7 @@ class _MicTextFieldState extends State<MicInputTextField>
 
     _amplitudeSub = _audioRec
         .onAmplitudeChanged(const Duration(milliseconds: 300))
-        .listen((amp) => setState(() => _amplitude = amp));
+        .listen((amp) => {});
 
     _textEditCont.addListener(() {
       _textEditCont.text.isEmpty ? _fieldDirty = false : _fieldDirty = true;
@@ -117,8 +116,6 @@ class _MicTextFieldState extends State<MicInputTextField>
   }
 
   Future<void> _pause() => _audioRec.pause();
-
-  Future<void> _resume() => _audioRec.resume();
 
   @override
   void dispose() {
