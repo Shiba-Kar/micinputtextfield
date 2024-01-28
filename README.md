@@ -1,6 +1,6 @@
 # Mic Input Textfield
 
-This package provides with image , text and audio input similar to wattsapp textfield.
+This package provides with image , text and audio input similar to whattsapp textfield.
 
 ## Installation
 
