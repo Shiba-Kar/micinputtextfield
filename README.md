@@ -14,6 +14,24 @@ To use this package, add `micinputtextfield` as a [dependency in your pubspec.ya
 dependencies:
     micinputtextfield: ^version_number
 ```
+# Android
+```xml
+
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+```
+
+# iOS
+```xml
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Save video in gallery</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Save audio in video</string>
+
+```
 
 ```dart
 

@@ -1,6 +1,6 @@
 name: micinputtextfield
 description: "This package provides with image , text and audio input similar to whattsapp textfield."
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/Shiba-Kar/micinputtextfield.git
 
 environment:
