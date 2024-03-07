@@ -228,7 +228,7 @@ class _MicTextFieldState extends State<MicInputTextField>
                       onPressed: () => Navigator.of(context).pop(true),
                       icon: const Icon(Icons.camera_alt),
                     ),
-                    Text("Camera"),
+                    const Text("Camera"),
                   ],
                 ),
                 SizedBox(width: width * 0.1),
@@ -238,7 +238,7 @@ class _MicTextFieldState extends State<MicInputTextField>
                       onPressed: () => Navigator.of(context).pop(false),
                       icon: const Icon(Icons.image),
                     ),
-                    Text("Gallery"),
+                    const Text("Gallery"),
                   ],
                 ),
               ],
@@ -332,10 +332,10 @@ class _MicTextFieldState extends State<MicInputTextField>
                                   children: [
                                     CircleAvatar(
                                       radius: 15.0,
+                                      backgroundImage: FileImage(_image!),
                                       child: isUploading
                                           ? const CircularProgressIndicator()
                                           : null,
-                                      backgroundImage: FileImage(_image!),
                                     ),
                                   ],
                                 )

@@ -22,14 +22,24 @@ class _MyAppState extends State<MyApp> {
 
       log(out.toJson().toString());
       log(noofincrement.toString());
-      await Future.delayed(Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 10));
       return true;
     }
 
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: MicInputTextField(onSend: onSend),
+          child: MicInputTextField(
+            onSend: (output) async {
+              log("OnSend");
+              noofincrement = ++noofincrement;
+
+              log(output.toJson().toString());
+              log(noofincrement.toString());
+              await Future.delayed(const Duration(seconds: 10));
+              return true;
+            },
+          ),
         ),
       ),
     );

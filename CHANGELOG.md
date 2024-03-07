@@ -9,3 +9,8 @@
 ## 0.0.3
 
 * readme.md
+
+## 0.0.4
+
+* uploading indicator
+* image picking options

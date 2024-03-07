@@ -6,15 +6,16 @@ This package provides with image , text and audio input similar to whattsapp tex
 
 To use this package, add `micinputtextfield` as a [dependency in your pubspec.yaml file](https://flutter.dev/docs/development/packages-and-plugins/using-packages).
 
-
 ![Demo](./ui.png)
 ![Demo Vedio](./ui.gif)
 
 ```yaml
 dependencies:
-    micinputtextfield: ^version_number
+  micinputtextfield: ^version_number
 ```
+
 # Android
+
 ```xml
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -24,6 +25,7 @@ dependencies:
 ```
 
 # iOS
+
 ```xml
 
 <key>NSPhotoLibraryUsageDescription</key>
@@ -37,13 +39,10 @@ dependencies:
 
 import 'package:micinputtextfield/mic_input_textfield.dart';
 
-MicInputTextField(
-            onSend: (ou) async {
-              log("OnSend");
-             
-              log(noofincrement.toString());
-            },
-          )
+ MicInputTextField(onSend: (output) async{
+      log(noofincrement.toString());
+      await Future.delayed(Duration(seconds: 10));
+      return true;
+          },),
 
 ```
-
