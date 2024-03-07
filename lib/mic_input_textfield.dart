@@ -29,7 +29,7 @@ export 'output.dart';
 
 class MicInputTextField extends StatefulWidget {
   /// A callback function that is called when the user sends a message.
-  final Function(Output output) onSend;
+  final Future<bool> Function(Output output) onSend;
 
   /// Creates a [MicInputTextField] widget.
   ///
@@ -56,6 +56,7 @@ class _MicTextFieldState extends State<MicInputTextField>
   StreamSubscription<Amplitude>? _amplitudeSub;
 
   bool _fieldDirty = false;
+  bool isUploading = false;
   File? _image;
   File? _audio;
 
@@ -127,18 +128,20 @@ class _MicTextFieldState extends State<MicInputTextField>
     super.dispose();
   }
 
-  _sendOut() {
-    widget.onSend(Output(
+  Future _sendOut() async {
+    setState(() => isUploading = true);
+    await widget.onSend(Output(
       audio: _audio,
       image: _image,
       message: _textEditCont.text,
     ));
+    setState(() => isUploading = false);
   }
 
   Future<void> send() async {
     if (!_fieldDirty && _image == null) {
     } else {
-      _sendOut();
+      await _sendOut();
       return reset();
     }
     if (_recordState == RecordState.record) {
@@ -205,13 +208,64 @@ class _MicTextFieldState extends State<MicInputTextField>
     }
   }
 
+  Future<bool?> showPicker() async {
+    var res = showDialog<bool?>(
+      context: context,
+      builder: (context) {
+        final height = MediaQuery.of(context).size.height;
+        final width = MediaQuery.of(context).size.width;
+        return AlertDialog(
+          title: const Text("Select Image Source"),
+          content: SizedBox(
+            height: height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      icon: const Icon(Icons.camera_alt),
+                    ),
+                    Text("Camera"),
+                  ],
+                ),
+                SizedBox(width: width * 0.1),
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      icon: const Icon(Icons.image),
+                    ),
+                    Text("Gallery"),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    return res;
+  }
+
   void onImageClick() async {
     if (_image != null) {
       removeImage();
       return;
     }
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image;
+    final x = await showPicker();
+    if (x == null) return;
+    if (x) {
+      image = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      image = await picker.pickImage(source: ImageSource.gallery);
+    }
+
     if (image == null) return;
     //  logger.d(image.path);
     _image = File(image.path);
@@ -272,11 +326,18 @@ class _MicTextFieldState extends State<MicInputTextField>
                           ),
                         )
                       : IconButton(
-                          onPressed: onImageClick,
+                          onPressed: !isUploading ? onImageClick : null,
                           icon: _image != null
-                              ? CircleAvatar(
-                                  radius: 15.0,
-                                  backgroundImage: FileImage(_image!),
+                              ? Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15.0,
+                                      child: isUploading
+                                          ? const CircularProgressIndicator()
+                                          : null,
+                                      backgroundImage: FileImage(_image!),
+                                    ),
+                                  ],
                                 )
                               : const Icon(Icons.camera_alt),
                         ),
@@ -286,8 +347,8 @@ class _MicTextFieldState extends State<MicInputTextField>
           ),
           const SizedBox(width: 10.0),
           ElevatedButton(
-            onPressed: send,
-            onLongPress: () => onAudio(),
+            onPressed: !isUploading ? send : null,
+            onLongPress: !isUploading ? onAudio : null,
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(10.0),

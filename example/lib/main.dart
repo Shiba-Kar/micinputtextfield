@@ -16,18 +16,20 @@ class _MyAppState extends State<MyApp> {
   int noofincrement = 0;
   @override
   Widget build(BuildContext context) {
+    Future<bool> onSend(Output out) async {
+      log("OnSend");
+      noofincrement = ++noofincrement;
+
+      log(out.toJson().toString());
+      log(noofincrement.toString());
+      await Future.delayed(Duration(seconds: 10));
+      return true;
+    }
+
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: MicInputTextField(
-            onSend: (ou) async {
-              log("OnSend");
-              noofincrement = ++noofincrement;
-
-              log(ou.toJson().toString());
-              log(noofincrement.toString());
-            },
-          ),
+          child: MicInputTextField(onSend: onSend),
         ),
       ),
     );
